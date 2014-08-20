@@ -1,0 +1,175 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+apply plugin: 'com.android.application'
+apply plugin: 'hockeyApp'
+
+hockeyapp {
+    apiToken = "e46a0d5ee1f440a98bbf21b520dce46b"
+    //releaseType = 2 // alpha
+    notify = 1
+    status = 2
+    notesType = 0
+    notes = getFileCode('NOTES')
+    symbolsDirectory = file(".")
+    mappingFileNameRegex = "mapping.txt"
+    variantToApplicationId = [
+        betaRelease: "78cba21ae8fde14e080581221ee8eee7"
+    ]
+}
+
+
+
+
+def incrementFileCode(codeName){
+    return setFileCode(codeName, getFileCode(codeName) + 1)
+}
+def setFileCode(codeName, value){
+    def versionPropsFile = file('version.properties')
+    if (versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionPropsFile))
+        versionProps[codeName] = ""+value
+        versionProps.store(versionPropsFile.newWriter(), null)
+        return value
+    }
+    return 0
+}
+def getFileCode(codeName) {
+    def versionPropsFile = file('version.properties')
+    if (versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionPropsFile))
+        println "version code: "+versionProps[codeName]
+        if(versionProps[codeName] != null) {
+            if(codeName == "NOTES"){
+                return  versionProps[codeName]
+            }
+            return versionProps[codeName].toInteger()
+        }
+    }
+    return 0
+}
+
+def getReleaseVersioName(versionCode) {
+    return ""+getFileCode("MAJOR_RELEASE")+"."+getFileCode("MINOR_RELEASE")+"."+getFileCode("FIX_RELEASE")
+}
+
+task('increaseVersionCode') << {
+    incrementFileCode("VERSION_CODE")
+    incrementFileCode("FIX_RELEASE")
+}
+
+task('addNotes') << {
+    println "old notes: "+getFileCode('NOTES')
+    def console = System.console()
+    if (console) {
+        notes = console.readLine('> Please enter version notes: ')
+        setFileCode('NOTES', notes)
+        hockeyapp.notes = notes
+    } else {
+        logger.error "Cannot get console."
+    }
+}
+
+
+
+android {
+    compileSdkVersion 20
+    buildToolsVersion "20.0.0"
+
+    defaultConfig {
+        applicationId "com.mi.blockslide"
+        minSdkVersion 13
+        targetSdkVersion 20
+        versionCode 1
+        versionName "1.0"
+    }
+    signingConfigs {
+        def privatePropsFile = file('private.properties')
+        if (privatePropsFile.canRead()) {
+            def Properties privateProps = new Properties()
+            privateProps.load(new FileInputStream(privatePropsFile))
+
+            release {
+                storeFile file(privateProps['PATH'].toString())
+                storePassword privateProps['PASSWORD'].toString()
+                keyAlias privateProps['KEYALIAS'].toString()
+                keyPassword privateProps['PASSWORD'].toString()
+            }
+
+        }
+    }
+    buildTypes {
+        debug {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlign true
+        }
+
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            signingConfig signingConfigs.release
+            zipAlign true
+
+        }
+    }
+
+    productFlavors {
+        dev {
+            packageName "com.mi.blockslide.dev"
+            versionCode getFileCode("VERSION_CODE")
+            versionName getReleaseVersioName()
+        }
+
+        beta {
+            packageName "com.mi.blockslide.beta"
+            versionCode getFileCode("VERSION_CODE")
+            versionName getReleaseVersioName()
+        }
+
+        prod {
+            packageName "com.mi.blockslide"
+            versionCode getFileCode("VERSION_CODE")
+            versionName getReleaseVersioName()
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+    }
+
+    assembleRelease.dependsOn addNotes
+
+    assembleRelease.doLast {
+        //tasks.uploadDevReleaseToHockeyApp.execute()
+        //tasks.uploadAlphaReleaseToHockeyApp.execute()
+        //hockeyapp.status = 1
+        tasks.uploadBetaReleaseToHockeyApp.execute()
+        tasks.increaseVersionCode.execute()
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.google.android.gms:play-services:5.0.77'
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.mixpanel.android:mixpanel-android:4.2.1@aar'
+
+}

@@ -1,0 +1,17 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    tools:context=".LevelActivity">
+
+   <com.mi.blockslide.views.FontTextView
+       android:id="@+id/level"
+       android:layout_width="fill_parent"
+       android:layout_height="fill_parent"
+       custom:font="@string/font"
+       android:textSize="24sp"
+       android:textColor="@color/gray"
+       />
+
+</FrameLayout>

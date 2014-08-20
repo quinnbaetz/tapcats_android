@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="font" format="string" />
+    <attr name="color" format="color" />
+    <attr name="radius" format="dimension" />
+
+
+    <declare-styleable name="LargerClickAreaButton">
+        <attr name="clickPadding" format="dimension"></attr>
+        <attr name="clickPaddingTop" format="dimension"></attr>
+        <attr name="clickPaddingBottom" format="dimension"></attr>
+        <attr name="clickPaddingLeft" format="dimension"></attr>
+        <attr name="clickPaddingRight" format="dimension"></attr>
+        <attr name="font" />
+    </declare-styleable>
+    <declare-styleable name="FontTextView">
+        <attr name="font" />
+    </declare-styleable>
+
+</resources>

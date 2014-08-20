@@ -1,0 +1,787 @@
+<html>
+    <head>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script>
+            var UP = 0;
+            var RIGHT = 1;
+            var DOWN = 2;
+            var LEFT = 3;
+            var levels =  {
+ "levels": [
+  {
+                 "name": "level 1",
+                 "rows": 3,
+                 "cols": 1,
+                 "blocks": [
+                 {
+                     "color":0,
+                     "direction":2,
+                     "location": [0, 0],
+                     "path": [2, 2]
+                 }],
+                 "goals": [
+                 {
+                     "color":0,
+                     "location": [0,2]
+                 }
+                 ]
+             },
+              {
+                 "name": "level 2",
+                     "rows": 4,
+                     "cols": 1,
+                     "blocks": [
+                     {
+                         "color":0,
+                         "direction":2,
+                         "location": [0, 0],
+                         "path": [2]
+                     },
+                     {
+                         "color": 1,
+                         "direction": 0,
+                         "location": [0, 3],
+                         "path": [0]
+                     }
+                     ],
+                     "goals": [
+                     {
+                         "color":0,
+                         "location": [0,1]
+                     },
+                     {
+                         "color":1,
+                         "location": [0,2]
+                     }
+                     ]
+                 },
+                {
+                 "name": "level 3",
+                     "rows": 3,
+                     "cols": 4,
+                     "blocks": [
+                     {
+                         "color":0,
+                         "direction":1,
+                         "location": [0, 0],
+                         "path": [1, 1]
+                     },
+                     {
+                         "color": 1,
+                         "direction": 0,
+                         "location": [1, 2],
+                         "path": [0, 0]
+                     },
+                       {
+                           "color": 2,
+                           "direction": 3,
+                           "location": [3, 1],
+                           "path": [3, 3]
+                       }
+                     ],
+                     "goals": [
+                     {
+                         "color":0,
+                         "location": [2,0]
+                     },
+                     {
+                         "color":1,
+                         "location": [1,0]
+                     },
+                     {
+                          "color":2,
+                          "location": [1,1]
+                      }
+                     ]
+                 },
+                  {
+                 "name": "level 4",
+                 "rows": 5,
+                 "cols": 5,
+                 "blocks": [
+                 {
+                     "color":0,
+                     "direction":2,
+                     "location": [2, 0],
+                     "path": [2, 2, 2, 2]
+                 },
+                 {
+                     "color": 1,
+                     "direction": 3,
+                     "location": [4, 2],
+                     "path": [3, 3, 2, 3, 3]
+                 }
+                 ],
+                 "goals": [
+                 {
+                     "color":0,
+                     "location": [2,4]
+                 },
+                 {
+                     "color":1,
+                     "location": [0,3]
+                 }
+                 ]
+             },
+             {
+                 "name": "level 5",
+                     "rows": 4,
+                     "cols": 4,
+                     "blocks": [
+                     {
+                         "color":0,
+                         "direction":1,
+                         "location": [0, 1],
+                         "path": [1, 2, 1, 2, 1]
+                     },
+                     {
+                         "color": 1,
+                         "direction": 2,
+                         "location": [1, 0],
+                         "path": [2]
+                     },
+                   {
+                       "color": 2,
+                       "direction": 2,
+                       "location": [2, 1],
+                       "path": [2]
+                   }
+                     ],
+                     "goals": [
+                     {
+                         "color":0,
+                         "location": [3,3]
+                     },
+                     {
+                         "color":1,
+                         "location": [1,1]
+                     },
+                   {
+                       "color":2,
+                       "location": [2,2]
+                   }
+                     ]
+                 },
+            {
+                 "name": "level 6",
+                "rows": 4,
+                "cols": 5,
+                "blocks": [
+                {
+                    "color":0,
+                    "direction":2,
+                    "location": [3, 0],
+                    "path": [2, 3, 2, 2]
+                },
+                {
+                    "color": 1,
+                    "direction": 3,
+                    "location": [4, 1],
+                    "path": [3, 3, 3]
+                },
+                 {
+                     "color": 2,
+                     "direction": 0,
+                     "location": [2, 2],
+                     "path": [0, 3, 3, 0]
+                 }
+                ],
+                "goals": [
+                {
+                    "color":0,
+                    "location": [2, 3]
+                },
+                {
+                    "color":1,
+                    "location": [1,1]
+                },
+                 {
+                     "color":2,
+                     "location": [0, 0]
+                 }
+                ]
+            },
+             {
+                 "name": "level 7",
+                 "rows": 3,
+                 "cols": 3,
+                 "blocks": [
+                 {
+                     "color":0,
+                     "direction":2,
+                     "location": [0, 0],
+                     "path": [2, 2, 1, 1, 0, 0]
+                 }
+                 ],
+                 "goals": [
+                 {
+                     "color":0,
+                     "location": [2,0]
+                 }
+                 ],
+                 "arrows": [
+                     {
+                         "location":[0, 2],
+                         "direction": 1
+                     },
+                      {
+                          "location":[2, 2],
+                          "direction": 0
+                      }
+                 ]
+             },
+              {
+                 "name": "level 8",
+                  "rows": 3,
+                  "cols": 4,
+                  "blocks": [
+                  {
+                      "color":0,
+                      "direction":2,
+                      "location": [0, 0],
+                      "path": [2, 2, 1, 1, 0, 0]
+                  },
+                  {
+                      "color": 1,
+                      "direction": 1,
+                      "location": [0, 2],
+                      "path": [1, 1, 1, 0, 0]
+                  }
+                  ],
+                  "goals": [
+                  {
+                      "color":0,
+                      "location": [2,0]
+                  },
+                  {
+                      "color":1,
+                      "location": [3,0]
+                  }
+                  ],
+                  "arrows": [
+                      {
+                          "location":[0, 2],
+                          "direction": 1
+                      },
+                       {
+                            "location":[2, 2],
+                            "direction": 0
+                        }
+                  ]
+              },
+               {
+                 "name": "level 9",
+                   "rows": 2,
+                   "cols": 4,
+                   "blocks": [
+                   {
+                       "color":0,
+                       "direction":1,
+                       "location": [0, 1],
+                       "path": [1, 1, 3, 0]
+                   },
+                   {
+                       "color": 1,
+                       "direction": 0,
+                       "location": [2, 1],
+                       "path": [1, 3, 0]
+                   }
+                   ],
+                   "goals": [
+                   {
+                       "color":0,
+                       "location": [1,0]
+                   },
+                   {
+                       "color":1,
+                       "location": [2,0]
+                   }
+                   ],
+                   "arrows": [
+                       {
+                           "location":[2, 1],
+                           "direction": 0
+                       },
+                        {
+                          "location":[3, 1],
+                          "direction": 3
+                      }
+                   ]
+               },
+                {
+                 "name": "level 10",
+                    "rows": 5,
+                    "cols": 5,
+                    "blocks": [
+                    {
+                        "color":0,
+                        "direction":2,
+                        "location": [2, 0],
+                        "path": [2, 2, 1, 3, 3]
+                    },
+                    {
+                        "color": 1,
+                        "direction": 0,
+                        "location": [2, 4],
+                        "path": [0, 0, 3, 3]
+                    },
+                     {
+                         "color": 2,
+                         "direction": 3,
+                         "location": [4, 2],
+                         "path": [3, 3, 1]
+                     }
+                    ],
+                    "goals": [
+                    {
+                        "color":0,
+                        "location": [1,2]
+                    },
+                    {
+                        "color":1,
+                        "location": [0,2]
+                    },
+                     {
+                         "color":2,
+                         "location": [3,2]
+                     }
+                    ],
+                    "arrows": [
+                        {
+                            "location":[2, 2],
+                            "direction": 1
+                        }
+                    ]
+                },
+                 {
+                 "name": "level 11",
+                     "rows": 5,
+                     "cols": 5,
+                     "blocks": [
+                     {
+                         "color":0,
+                         "direction":1,
+                         "location": [0, 0],
+                         "path": [1, 1, 3, 2, 2]
+                     },
+                     {
+                         "color": 1,
+                         "direction": 3,
+                         "location": [4, 0],
+                         "path": [3, 3, 2, 2]
+                     },
+                      {
+                          "color": 2,
+                          "direction": 0,
+                          "location": [2, 4],
+                          "path": [0, 0, 0, 0, 1, 2, 2]
+                      }
+                     ],
+                     "goals": [
+                     {
+                         "color":0,
+                         "location": [1,2]
+                     },
+                     {
+                         "color":1,
+                         "location": [2,2]
+                     },
+                      {
+                          "color":2,
+                          "location": [3,2]
+                      }
+                     ],
+                     "arrows": [
+                         {
+                             "location":[2, 0],
+                             "direction": 2
+                         }
+                     ]
+                 },
+                {
+                 "name": "level 12",
+                     "rows": 4,
+                     "cols": 4,
+                     "blocks": [
+                     {
+                         "color":0,
+                         "direction":1,
+                         "location": [0, 2],
+                         "path": [1, 1, 0, 1, 3, 3, 2]
+                     },
+                     {
+                         "color": 1,
+                         "direction": 0,
+                         "location": [2, 3],
+                         "path": [0, 0, 3, 0, 2]
+                     }
+                     ],
+                     "goals": [
+                     {
+                         "color":0,
+                         "location": [1,2]
+                     },
+                     {
+                         "color":1,
+                         "location": [1,1]
+                     }
+                     ],
+                     "arrows": [
+                         {
+                             "location":[1, 0],
+                             "direction": 2
+                         },
+                          {
+                              "location":[3, 1],
+                              "direction": 3
+                          }
+                     ]
+                 },
+                {
+                 "name": "level 13",
+                     "rows": 6,
+                     "cols": 4,
+                     "blocks": [
+                     {
+                         "color":0,
+                         "direction":2,
+                         "location": [1, 1],
+                         "path": [2, 0, 0]
+                     },
+                     {
+                         "color": 1,
+                         "direction": 3,
+                         "location": [3, 3],
+                         "path": [3, 3, 2, 3]
+                     },
+                     {
+                          "color": 2,
+                          "direction": 0,
+                          "location": [2, 5],
+                          "path": [0, 0, 3, 0, 2, 0, 0, 2]
+                      }
+                     ],
+                     "goals": [
+                     {
+                         "color":0,
+                         "location": [1,0]
+                     },
+                     {
+                         "color":1,
+                         "location": [0,4]
+                     },
+                       {
+                           "color":2,
+                           "location": [1,2]
+                       }
+                     ],
+                     "arrows": [
+                         {
+                             "location":[1, 1],
+                             "direction": 2
+                         }
+                     ]
+                 },
+                  {
+                 "name": "level 14",
+                     "rows": 5,
+                     "cols": 5,
+                     "blocks": [
+                     {
+                         "color":0,
+                         "direction":3,
+                         "location": [3, 2],
+                         "path": [3, 0, 3]
+                     },
+                     {
+                         "color": 1,
+                         "direction": 0,
+                         "location": [2, 3],
+                         "path": [0, 2, 0]
+                     },
+                     {
+                          "color": 2,
+                          "direction": 1,
+                          "location": [1, 2],
+                          "path": [1, 0, 1]
+                      },
+                    {
+                         "color": 3,
+                         "direction": 2,
+                         "location": [2, 1],
+                         "path": [0, 2, 2, 1, 2]
+                     }
+                     ],
+                     "goals": [
+                     {
+                         "color":0,
+                         "location": [1,1]
+                     },
+                     {
+                         "color":1,
+                         "location": [2, 2]
+                     },
+                       {
+                           "color":2,
+                           "location": [3, 1]
+                       },
+                      {
+                          "color":3,
+                          "location": [3, 3]
+                      }
+                     ]
+                 },
+  {
+                 "name": "level 15",
+                      "rows": 3,
+                      "cols": 4,
+                      "blocks": [
+                      {
+                          "color":0,
+                          "direction":2,
+                          "location": [0, 0],
+                          "path": [2, 1, 1, 0, 1, 3, 3, 3, 2, 1]
+                      },
+                      {
+                          "color": 1,
+                          "direction": 0,
+                          "location": [2, 2],
+                          "path": [0, 0, 3, 3, 2, 2, 1]
+                      }
+                      ],
+                      "goals": [
+                      {
+                          "color":0,
+                          "location": [1,1]
+                      },
+                      {
+                          "color":1,
+                          "location": [1, 2]
+                      }
+                      ],
+                      "arrows": [
+                      {
+                          "location":[0, 0],
+                          "direction": 2
+                      },
+                      {
+                        "location":[0, 1],
+                        "direction": 1
+                    },
+                     {
+                          "location":[3, 0],
+                          "direction": 3
+                      }
+                  ]
+                  },
+            {
+
+                 "name": "level 16",
+                "rows": 3,
+                "cols": 5,
+                "blocks": [
+                {
+                    "color":0,
+                    "direction":1,
+                    "location": [1, 4],
+                    "path": [1, 1, 3, 0]
+                },
+                {
+                    "color": 1,
+                    "direction": 0,
+                    "location": [3, 4],
+                    "path": [1, 3, 0]
+                }
+                ],
+                "goals": [
+                {
+                    "color":0,
+                    "location": [2,3]
+                },
+                {
+                    "color":1,
+                    "location": [3,3]
+                }
+                ],
+                "arrows": [
+                    {
+                        "location":[4, 4],
+                        "direction": 3
+                    }
+                ]
+            }
+        ]
+  };
+
+
+            function isValid(level){
+                for(var i = 0; i<level.blocks.length; i++){
+                    if(level.blocks[i].location[0] < 0 ||
+                       level.blocks[i].location[0] >= level.cols ||
+                       level.blocks[i].location[1] < 0 ||
+                       level.blocks[i].location[1] >= level.rows){
+                        return false;
+                    }
+                }
+                return true;
+             }
+
+             function isSolved(level){
+                for(var l = 0; l<level.goals.length; l++){
+                    marked = false;
+                    for(var i = 0; i<level.blocks.length; i++){
+
+                        if(level.blocks[i].color == level.goals[l].color &&
+                           level.blocks[i]["location"][0] == level.goals[l]["location"][0] &&
+                           level.blocks[i]["location"][1] == level.goals[l]["location"][1]){
+                            marked = true;
+                            break;
+                        }
+                    }
+                    if(!marked){
+                        return false;
+                    }
+                }
+                return true;
+
+             }
+
+             function move(level, pos, direction){
+                var x = level.blocks[pos]["location"][0]
+                var y = level.blocks[pos]["location"][1]
+                switch(direction){
+                    case UP:
+                        y-=1;
+                    break;
+                    case RIGHT:
+                        x+=1;
+                    break;
+                    case DOWN:
+                        y+=1;
+                    break;
+                    case LEFT:
+                        x-=1;
+                    break;
+                }
+                level.blocks[pos]["location"][0] = x;
+                level.blocks[pos]["location"][1] = y;
+
+                for(var i = 0; i<level.blocks.length; i++){
+                    if(i == pos){
+                        continue;
+                    }
+                    if(level.blocks[i].location[0] == x &&
+                        level.blocks[i].location[1] == y){
+                        move(level, i, direction);
+                    }
+
+
+                }
+
+                if(typeof level.arrows !== "undefined"){
+                  for(var i = 0; i<level.arrows.length; i++){
+                      if(level.arrows[i].location[0] == x &&
+                          level.arrows[i].location[1] == y){
+                          level.blocks[pos].direction = level.arrows[i].direction;
+                      }
+
+
+                  }
+                }
+             }
+
+             function getBoardHash(level){
+                 var strings = [];
+                 var hash = "";
+                 for(var i = 0; i<level.blocks.length; i++){
+                    strings[level.blocks[i].color] = ","+level.blocks[i].color+level.blocks[i].direction+level.blocks[i].location[0]+level.blocks[i].location[1];
+                 }
+                 for(var i = 0; i<4; i++){
+                    if(typeof strings[i] !== "undefined"){
+                        hash += strings[i];
+                    }
+                 }
+                 return hash.substring(1);
+
+             }
+
+             function solve(level, ignoreHash){
+                var hash = getBoardHash(level);
+                if(typeof solutions[hash] !== "undefined"){
+                    return solutions[hash];
+                }
+
+                if(typeof ignoreHash[hash] !== "undefined"){
+                  solutions[hash] = false;
+                  return false;
+                }
+
+                if(!isValid(level)){
+                    solutions[hash] = false;
+                    return false;
+                }
+
+
+                if(isSolved(level)){
+                    solutions[hash] = [hash];
+                    return [hash];
+                }
+                ignoreHash[hash] = true;
+                var myRet = [];
+                for(var i = 0; i<level.blocks.length; i++){
+                    var newLevel = jQuery.extend(true, {}, level);
+                    var newHash = jQuery.extend(true, {}, ignoreHash);
+                    move(newLevel, i, newLevel.blocks[i].direction);
+
+                    ret = solve(newLevel, newHash);
+
+                    if(ret == false){
+                        continue;
+                    }else{
+                        for(var x = 0; x<ret.length; x++){
+                            myRet.push(hash + ">" +ret[x]);
+                        }
+                    }
+                }
+                if(myRet.length == 0){
+                    solutions[hash] = false;
+                    return false;
+                }else{
+                    solutions[hash] = myRet;
+                    return myRet;
+                }
+
+
+             }
+
+             for(var i = 0; i<levels.levels.length; i++){
+               solutions = {};
+               var optimized = {};
+               console.log("solving "+levels.levels[i].name)
+               solve(levels.levels[i], {})
+               for(var key in solutions){
+                  if(!solutions[key]){
+                    continue;
+                  }
+
+                  solutions[key].sort(function(a, b){
+                    return a.length - b.length; // ASC -> a - b; DESC -> b - a
+                  });
+                  optimized[key] = solutions[key][0].substring(0, solutions[key][0].indexOf('>'));
+               }
+               levels.levels[i].solution = optimized;
+
+             }
+             console.log(levels);
+
+
+
+
+        </script>
+    </head>
+    <body>
+
+    </body>
+
+</html>
